@@ -40,8 +40,7 @@ struct NotepadTab
         u8 SelectionStartDelimiter;
         ul SelectionStartIndex;
         ul SelectionEndIndex;
-        u8 SelectionEndDelimiter[2];
-        u8 Unknown1[2];
+        u8 SelectionEndDelimiter[4];
         ul ContentLength;
         char16 Content[ContentLength];
         bool IsUnsaved;
