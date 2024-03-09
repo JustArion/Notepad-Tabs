@@ -13,7 +13,7 @@ struct UnsavedNotepadTab
     ul SelectionEndIndex;
     u8 SelectionEndDelimiter[2];
     u8 Unknown1[2];
-    ul TabContentLength;
+    ul ContentLength;
     char16 Content[ContentLength];
     bool IsTempFile;
     u32 CRC32;

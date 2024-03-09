@@ -17,7 +17,7 @@ struct SavedNotepadTab
 
     u8 Unknown1[2];
 
-    ul uLEB128FileTime;
+    ul FileTime;
 
     u8 Unknown2[32];
     u8 PossibleSpecialDelimiter[2];
@@ -35,5 +35,5 @@ struct SavedNotepadTab
 
 SavedNotepadTab tabState @ 0x0;
 
-std::time::EpochTime unixTime = std::time::filetime_to_unix(tabState.uLEB128FileTime);
+std::time::EpochTime unixTime = std::time::filetime_to_unix(tabState.FileTime);
 std::print("Last Saved Unix Time is " + std::string::to_string(unixTime));
