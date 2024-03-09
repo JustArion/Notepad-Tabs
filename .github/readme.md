@@ -15,16 +15,22 @@ The Pattern for this type can be found [here](../ImHex-Patterns/FileTab.pat)
 
 - [3] `char[3]` Header Identifier (Null Terminated) `NP\0`
 - [1] `bool` IsSaved (The Tab) `00 / 01`
-- [1-16] `ul` Saved File Path Length
-- [~] `char16[~]` Saved File Path
-    - UTF-16
-- [1-16] `ul` Tab Content Length
-- [2] `u8[2]` Possible Delimiter `05 01`
-- [1-16] `ul` FileTime `D2 EC E8 C2 D8 AF 9C ED 01`
-    - Increments from Left to Right
-    - 9 bytes
-- [33] `u8[33]` Unknown For Now / To Do
-- [2] `u8[2]` Possible Delimiter `00 01`
+
+`If IsSaved:`
+> - [1-16] `ul` Saved File Path Length
+> - [~] `char16[~]` Saved File Path
+>     - UTF-16
+> - [1-16] `ul` Tab Content Length
+> - [2] `u8[2]` Possible Delimiter `05 01`
+> - [1-16] `ul` FileTime `D2 EC E8 C2 D8 AF 9C ED 01`
+>     - Increments from Left to Right
+>     - 9 bytes
+> - [33] `u8[32]` Unknown For Now / To Do
+> - [2] `u8[2]` Possible Selection Start Delimiter `00 01`
+
+`Else:`
+> - [1] `u8` Possible Selection Start Delimiter
+
 - [1-16] `ul` Selection Start Index
 - [1-16] `ul` Selection End Index
 - [4] `u8[4]` Possible Delimiter `01 00 00 00`
@@ -32,6 +38,21 @@ The Pattern for this type can be found [here](../ImHex-Patterns/FileTab.pat)
     - Same as previous
 - [~] `char16[~]` Tab Content
     - UTF-16
-- [1] `bool` IsTempFile `00 / 01`
-    - Unsure about this one
-- [4] `u32` CRC32 of all content from **after** the *Header Identifier* up to here
+- [1] `bool` Unknown Bool `00 / 01`
+    - `False` on Saved File
+    - `True` on Unsaved File
+    - `False` on Unsaved File with Chunks
+- [4] `u32` CRC of all content from **after** the *Header Identifier* up to here
+- [~] `UnsavedChunk[~]` Remaining unsaved chunks of user input (Additions or Deletions)
+    - Thanks to [ogmini](https://github.com/ogmini/)
+
+
+### Unsaved Chunk
+
+`[~] = Undefined Length / Defined at runtime`
+
+- [1-16] `ul` Cursor Position
+- [1-16] `ul` Number of Characters Deleted
+- [1-16] `ul` Numbers of Characters Added
+- [~] `char16[~]` Literal Characters that have been added.
+- [4] `u32` CRC of all content of the chunk up to here
