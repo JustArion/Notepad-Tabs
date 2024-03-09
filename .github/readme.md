@@ -13,7 +13,7 @@ The Pattern for this type can be found [here](../ImHex-Patterns/FileTab.pat)
 
 `[~] = Undefined Length / Defined at runtime`
 
-- [3] `string` Header Identifier (Null Terminated) `NP\0`
+- [3] `char[3]` Header Identifier (Null Terminated) `NP\0`
 - [1] `bool` IsSaved (The Tab) `00 / 01`
 - [1-16] `ul` Saved File Path Length
 - [~] `char16[~]` Saved File Path
