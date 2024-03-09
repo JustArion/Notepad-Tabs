@@ -20,8 +20,9 @@ The Pattern for this type can be found [here](../ImHex-Patterns/FileTab.pat)
     - UTF-16
 - [1-16] `ul` Tab Content Length
 - [2] `u8[2]` Possible Delimiter `05 01`
-- [8] `?` Unknown Type of Timestamp `D2 EC E8 C2 D8 AF 9C ED`
+- [1-16] `ul` FileTime `D2 EC E8 C2 D8 AF 9C ED 01`
     - Increments from Left to Right
+    - 9 bytes
 - [33] `u8[33]` Unknown For Now / To Do
 - [2] `u8[2]` Possible Delimiter `00 01`
 - [1-16] `ul` Selection Start Index
