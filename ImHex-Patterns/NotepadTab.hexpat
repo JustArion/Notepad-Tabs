@@ -44,7 +44,7 @@ struct NotepadTab
         u8 Unknown1[2];
         ul ContentLength;
         char16 Content[ContentLength];
-        bool IsTempFile;
+        bool IsUnsaved;
         u32 CRC32;
     }
 };
