@@ -25,7 +25,7 @@ struct NotepadTab
     {
         ul SavedFilePathLength;
         char16 SavedFilePath[SavedFilePathLength];
-        ul ContentLength1;
+        ul ContentLengthInBytes1;
 
         u8 Unknown1[2]; // 05 01
 
@@ -44,8 +44,8 @@ struct NotepadTab
 
     u8 SelectionEndDelimiter[4]; // 01 00 00 00
 
-    ul ContentLength;
-    char16 Content[ContentLength];
+    ul ContentLengthInBytes;
+    char16 Content[ContentLengthInBytes];
 
     // False on Saved File, 
     // True on unsaved file,
