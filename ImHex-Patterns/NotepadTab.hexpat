@@ -16,6 +16,21 @@ struct UnsavedChunk
     u8 CRC32[4];
 };
 
+enum EncodingTypes : u8
+{
+    ANSI = 1,
+    UTF16LE = 2,
+    UTF16BE = 3,
+    UTF8BOM = 4,
+    UTF8 = 5
+};
+
+enum EOLSequenceType : u8
+{
+    CRLF = 1,
+    LF = 3,
+};
+
 struct NotepadTab
 {
     char NullTerminatedHeaderIdentifier[3]; // NP\0
@@ -27,7 +42,9 @@ struct NotepadTab
         char16 SavedFilePath[SavedFilePathLength];
         ul SavedContentLength;
 
-        u8 Unknown1[2]; // 05 01
+        EncodingTypes EncodingType;
+
+        EOLSequenceType LineCarriage;
 
         ul FileTime;
         u8 Content_SHA256[32];
@@ -91,6 +108,9 @@ if (tab.IsSaved)
     std::time::Time localTime = filetime_to_local(tab.FileTime);
 
     str formattedFileTime = std::time::format(localTime, "%H:%M:%S | %Y-%m-%d");
+
+    std::print("Encoding Type: {0}", std::string::to_string(tab.EncodingType));
+    std::print("Line Carriage Type: {0}", std::string::to_string(tab.LineCarriage));
 
     std::print("File: {0}", tab.SavedFilePath);
     std::print("Saved at " + formattedFileTime);
