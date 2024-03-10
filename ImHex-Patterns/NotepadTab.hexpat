@@ -4,6 +4,7 @@
 #include <type/leb128.pat>
 #include <std/time.pat>
 
+// Lengths in the pattern are Lengths in Bytes as opposed to Length of characters.
 using ul = type::uLEB128;
 
 // Thanks to https://github.com/ogmini/Notepad-Tabstate-Buffer/blob/main/README.md#insertion-chunk
@@ -25,7 +26,7 @@ struct NotepadTab
     {
         ul SavedFilePathLength;
         char16 SavedFilePath[SavedFilePathLength];
-        ul ContentLengthInBytes1;
+        ul ContentLength1;
 
         u8 Unknown1[2]; // 05 01
 
@@ -44,8 +45,8 @@ struct NotepadTab
 
     u8 SelectionEndDelimiter[4]; // 01 00 00 00
 
-    ul ContentLengthInBytes;
-    char16 Content[ContentLengthInBytes];
+    ul ContentLength;
+    char16 Content[ContentLength];
 
     // False on Saved File, 
     // True on unsaved file,
