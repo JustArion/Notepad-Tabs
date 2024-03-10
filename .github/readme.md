@@ -9,7 +9,7 @@
 
 ### File Tab
 
-The Pattern for this type can be found [here](../ImHex-Patterns/FileTab.pat)
+The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 
 `[~] = Undefined Length / Defined at runtime`
 
