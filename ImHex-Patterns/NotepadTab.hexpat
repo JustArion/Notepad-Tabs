@@ -49,6 +49,7 @@ struct NotepadTab
         EOLSequenceType LineCarriage;
         ul FileTime;
         u8 FileContent_SHA256[32];
+        
         u8 SelectionStartDelimiter[2]; // 00 01
     }
     else 
