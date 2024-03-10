@@ -20,7 +20,7 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 > - [1-16] `ul` Saved File Path Length
 > - [~] `char16[~]` Saved File Path
 >     - UTF-16
-> - [1-16] `ul` Tab Content Length
+> - [1-16] `ul` Saved Tab Content Length
 > - [2] `u8[2]` Possible Delimiter `05 01`
 > - [1-16] `ul` FileTime `D2 EC E8 C2 D8 AF 9C ED 01`
 >     - Increments from Left to Right
@@ -34,8 +34,7 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 - [1-16] `ul` Selection Start Index
 - [1-16] `ul` Selection End Index
 - [4] `u8[4]` Possible Delimiter `01 00 00 00`
-- [1-16] `ul` Tab Content Length
-    - Same as previous
+- [1-16] `ul` Unsaved Tab Content Length
 - [~] `char16[~]` Tab Content
     - UTF-16
 - [1] `bool` Unknown Bool `00 / 01`

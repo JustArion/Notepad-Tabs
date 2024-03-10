@@ -29,7 +29,7 @@ struct NotepadTab
     {
         ul SavedFilePathLength;
         char16 SavedFilePath[SavedFilePathLength];
-        ul ContentLength1;
+        ul SavedContentLength;
 
         u8 Unknown1[2]; // 05 01
 
@@ -48,23 +48,24 @@ struct NotepadTab
 
     u8 SelectionEndDelimiter[4]; // 01 00 00 00
 
-    ul ContentLength;
-    char16 Content[ContentLength];
+    ul CurrentContentLength;
+    char16 Content[CurrentContentLength];
 
     // False on Saved File, 
     // True on unsaved file,
     // False on unsaved file with chunks
-    bool Unknown3; 
+    // True on saved file with unsaved content
+    bool HasUnsavedContent; 
 
     u8 CRC32[4];
     UnsavedChunk Chunks[0];
 };
 
-fn VerifyLengths(ref NotepadTab tab)
+fn CheckForUnsavedContent(ref NotepadTab tab)
 {
-    if (tab.ContentLength1 != tab.ContentLength)
+    if (tab.SavedContentLength != tab.CurrentContentLength)
     {
-        std::warning("Content Length Mismatch! Length 1 is {0} While Length 2 is {1}", tab.ContentLength1, tab.ContentLength);
+        std::print(std::format("You have some unsaved content! {0} bytes of unsaved content!", tab.CurrentContentLength - tab.SavedContentLength));
     }
 };
 
@@ -92,7 +93,7 @@ if (tab.IsSaved)
     std::time::EpochTime unixTime = std::time::filetime_to_unix(tab.FileTime);
     std::print("Last Saved Unix Time is {0}",std::string::to_string(unixTime));
 
-    VerifyLengths(tab);
+    CheckForUnsavedContent(tab);
 
     std::time::Time localTime = filetime_to_local(tab.FileTime);
 
