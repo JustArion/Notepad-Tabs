@@ -5,6 +5,11 @@
 - 1.bin
 
 ---
+
+#### Template:
+- [sizeInBytes] `dataType` Short Description / Title `Example Bytes`
+    - Additional Observations
+
 **Note:** For convenience sake I will denote `ULEB128` as `ul`
 
 ### File Tab
