@@ -31,7 +31,7 @@ struct NotepadTab
 
         ul FileTime;
 
-        u8 Unknown2[32];
+        u8 Content_SHA256[32];
         u8 SelectionStartDelimiter[2]; // 00 01
     }
     else 
