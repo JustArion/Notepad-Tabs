@@ -16,6 +16,8 @@ struct UnsavedChunk
     u8 CRC32[4];
 };
 
+// --- Data Types ---
+
 // Default fallback is UTF-8
 enum EncodingTypes : u8
 {
@@ -43,11 +45,8 @@ struct NotepadTab
         ul SavedFilePathLength;
         char16 SavedFilePath[SavedFilePathLength];
         ul SavedContentLength;
-
         EncodingTypes EncodingType;
-
         EOLSequenceType LineCarriage;
-
         ul FileTime;
         u8 FileContent_SHA256[32];
         u8 SelectionStartDelimiter[2]; // 00 01
@@ -73,6 +72,7 @@ struct NotepadTab
     UnsavedChunk Chunks[0];
 };
 
+// --- Functions ---
 fn CheckForUnsavedContent(ref NotepadTab tab)
 {
     if (tab.SavedContentLength != tab.CurrentContentLength)
@@ -98,7 +98,11 @@ fn format_to_hex(auto data)
     return result;
 };
 
+// -- Declaration --
+
 NotepadTab tab @ 0x0;
+
+// -- Presentation --
 
 if (tab.IsSaved)
 {
