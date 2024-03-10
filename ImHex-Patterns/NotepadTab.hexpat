@@ -1,11 +1,7 @@
-#include <std/mem.pat>
 #include <std/string.pat>
-#include <std/hash.pat>
 #include <type/leb128.pat>
 #include <std/time.pat>
-#include <hex/provider.pat>
 #include <std/core.pat>
-#include <std/array.pat>
 
 using ul = type::uLEB128;
 using int = u32;
@@ -17,7 +13,7 @@ struct UnsavedChunk
     ul CharactersDeleted;
     ul CharactersAdded;
     char16 AddedCharacters[CharactersAdded];
-    u32 CRC32;
+    u8[4] CRC32;
 };
 
 struct NotepadTab
@@ -34,7 +30,6 @@ struct NotepadTab
         u8 Unknown1[2]; // 05 01
 
         ul FileTime;
-
         u8 Content_SHA256[32];
         u8 SelectionStartDelimiter[2]; // 00 01
     }
@@ -50,13 +45,11 @@ struct NotepadTab
 
     ul CurrentContentLength;
     char16 Content[CurrentContentLength];
-
     // False on Saved File, 
     // True on unsaved file,
     // False on unsaved file with chunks
     // True on saved file with unsaved content
     bool HasUnsavedContent; 
-
     u8 CRC32[4];
     UnsavedChunk Chunks[0];
 };
@@ -71,7 +64,7 @@ fn CheckForUnsavedContent(ref NotepadTab tab)
 
 fn filetime_to_local(ul time)
 {
-    u32 epoch=std::time::filetime_to_unix(time);
+    int epoch=std::time::filetime_to_unix(time);
     return std::time::to_local(epoch);
 };
 
@@ -79,9 +72,9 @@ fn format_to_hex(auto data)
 {
     int length = std::core::member_count(data);
     str result;
-    for(int i = 0,i < length, i = i+1)
+    for(int i = 0, i < length, i = i+1)
     {
-        result = result + std::format("{:X}",u8(data[i]));
+        result = result + std::format("{:X}", u8(data[i]));
     }
     return result;
 };
