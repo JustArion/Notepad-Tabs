@@ -13,7 +13,7 @@ struct UnsavedChunk
     ul CharactersDeleted;
     ul CharactersAdded;
     char16 AddedCharacters[CharactersAdded];
-    u8[4] CRC32;
+    u8 CRC32[4];
 };
 
 struct NotepadTab
