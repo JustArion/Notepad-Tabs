@@ -30,7 +30,7 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 > - [1-16] `ul` FileTime `D2 EC E8 C2 D8 AF 9C ED 01`
 >     - Increments from Left to Right
 >     - 9 bytes
-> - [32] `u8[32]` SHA-256 of the Content
+> - [32] `u8[32]` SHA-256 of the File's Content
 > - [2] `u8[2]` Possible Selection Start Delimiter `00 01`
 
 `Else:`

@@ -16,19 +16,21 @@ struct UnsavedChunk
     u8 CRC32[4];
 };
 
+// Default fallback is UTF-8
 enum EncodingTypes : u8
 {
-    ANSI = 1,
-    UTF16LE = 2,
-    UTF16BE = 3,
+    UTF8 = 5,
     UTF8BOM = 4,
-    UTF8 = 5
+    UTF16BE = 3,
+    UTF16LE = 2,
+    ANSI = 1,
 };
 
 enum EOLSequenceType : u8
 {
-    CRLF = 1,
-    LF = 3,
+    CRLF = 1, // Windows
+    CR = 2, // Mac
+    LF = 3, // Linux
 };
 
 struct NotepadTab
@@ -47,7 +49,7 @@ struct NotepadTab
         EOLSequenceType LineCarriage;
 
         ul FileTime;
-        u8 Content_SHA256[32];
+        u8 FileContent_SHA256[32];
         u8 SelectionStartDelimiter[2]; // 00 01
     }
     else 
@@ -114,7 +116,7 @@ if (tab.IsSaved)
 
     std::print("File: {0}", tab.SavedFilePath);
     std::print("Saved at " + formattedFileTime);
-    std::print("SHA256: {0}", format_to_hex(tab.Content_SHA256));
+    std::print("SHA256: {0}", format_to_hex(tab.FileContent_SHA256));
 
     std::print("Cursor Position: {0}", tab.SelectionStartIndex);
     
