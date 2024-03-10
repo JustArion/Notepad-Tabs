@@ -37,10 +37,11 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 - [1-16] `ul` Unsaved Tab Content Length
 - [~] `char16[~]` Tab Content
     - UTF-16
-- [1] `bool` Unknown Bool `00 / 01`
+- [1] `bool` Has Unsaved Content `00 / 01`
     - `False` on Saved File
     - `True` on Unsaved File
     - `False` on Unsaved File with Chunks
+    - `True` on saved file with unsaved content
 - [4] `u8[4]` CRC of all content from **after** the *Header Identifier* up to here
 - [~] `UnsavedChunk[~]` Remaining unsaved chunks of user input (Additions or Deletions)
     - Thanks to [ogmini](https://github.com/ogmini/)
