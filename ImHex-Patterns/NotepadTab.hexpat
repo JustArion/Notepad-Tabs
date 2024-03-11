@@ -37,7 +37,11 @@ enum EOLSequenceType : u8
 
 struct NotepadTab
 {
-    char NullTerminatedHeaderIdentifier[3]; // NP\0
+    char NullTerminatedHeaderIdentifier[2]; // NP
+
+    // https://github.com/Nordgaren/tabstate-util/issues/1#issuecomment-1988731585
+    ul PossibleSequenceNumber;
+
     bool IsSaved;
 
     if (IsSaved)
@@ -76,9 +80,9 @@ struct NotepadTab
 // --- Functions ---
 fn CheckForUnsavedContent(ref NotepadTab tab)
 {
-    if (tab.SavedContentLength != tab.CurrentContentLength)
+    if (tab.HasUnsavedContent && tab.SavedContentLength != tab.CurrentContentLength)
     {
-        std::print(std::format("You have some unsaved content! {0} bytes of unsaved content!", tab.CurrentContentLength - tab.SavedContentLength));
+        std::warning(std::format("You have some unsaved content! {0} bytes of unsaved content!", tab.CurrentContentLength - tab.SavedContentLength));
     }
 };
 
