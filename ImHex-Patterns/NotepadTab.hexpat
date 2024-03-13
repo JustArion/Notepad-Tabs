@@ -35,24 +35,49 @@ enum EOLSequenceType : u8
     LF = 3, // Linux
 };
 
+struct SelectionInfo
+{
+    ul StartIndex;
+    ul EndIndex;
+};
+
+// https://github.com/Nordgaren/tabstate-util/blob/master/TabState.bt#L48
+// Word Wrap is in the "View" menu
+// The options that appear when you right click
+struct TabOptions
+{
+    bool WordWrap;
+    bool RightToLeft;
+    bool ShowUnicodeControl;
+    u8 Unknown;
+};
+
+struct string16
+{
+    ul Length;
+    char16 Value[Length];
+};
+
+struct SavedFileInfo
+{
+    string16 SavedFilePath;
+    ul ContentLength;
+    EncodingTypes EncodingType;
+    EOLSequenceType LineCarriage;
+    ul FileTime;
+    u8 SHA256[32];
+};
+
 struct NotepadTab
 {
     char NullTerminatedHeaderIdentifier[2]; // NP
-
     // https://github.com/Nordgaren/tabstate-util/issues/1#issuecomment-1988731585
-    ul PossibleSequenceNumber;
-
+    ul UnsavedSequenceNumber; // 0 in Saved files.
     bool IsSaved;
 
     if (IsSaved)
     {
-        ul SavedFilePathLength;
-        char16 SavedFilePath[SavedFilePathLength];
-        ul SavedContentLength;
-        EncodingTypes EncodingType;
-        EOLSequenceType LineCarriage;
-        ul FileTime;
-        u8 FileContent_SHA256[32];
+        SavedFileInfo FileInfo;
         
         u8 SelectionStartDelimiter[2]; // 00 01
     }
@@ -61,13 +86,10 @@ struct NotepadTab
         u8 SelectionStartDelimiter; // 01
     }
     
-    ul SelectionStartIndex;
-    ul SelectionEndIndex;
+    SelectionInfo CursorInfo;
+    TabOptions Options;
+    string16 Content;
 
-    u8 SelectionEndDelimiter[4]; // 01 00 00 00
-
-    ul CurrentContentLength;
-    char16 Content[CurrentContentLength];
     // False on Saved File, 
     // True on unsaved file,
     // False on unsaved file with chunks
@@ -78,13 +100,6 @@ struct NotepadTab
 };
 
 // --- Functions ---
-fn CheckForUnsavedContent(ref NotepadTab tab)
-{
-    if (tab.HasUnsavedContent && tab.SavedContentLength != tab.CurrentContentLength)
-    {
-        std::warning(std::format("You have some unsaved content! {0} bytes of unsaved content!", tab.CurrentContentLength - tab.SavedContentLength));
-    }
-};
 
 fn filetime_to_local(ul time)
 {
@@ -111,28 +126,29 @@ NotepadTab tab @ 0x0;
 
 if (tab.IsSaved)
 {
-    std::time::EpochTime unixTime = std::time::filetime_to_unix(tab.FileTime);
+    std::time::EpochTime unixTime = std::time::filetime_to_unix(tab.FileInfo.FileTime);
     std::print("Last Saved Unix Time is {0}",std::string::to_string(unixTime));
 
-    CheckForUnsavedContent(tab);
-
-    std::time::Time localTime = filetime_to_local(tab.FileTime);
+    std::time::Time localTime = filetime_to_local(tab.FileInfo.FileTime);
 
     str formattedFileTime = std::time::format(localTime, "%H:%M:%S | %Y-%m-%d");
 
-    std::print("Encoding Type: {0}", std::string::to_string(tab.EncodingType));
-    std::print("Line Carriage Type: {0}", std::string::to_string(tab.LineCarriage));
-
-    std::print("File: {0}", tab.SavedFilePath);
+    std::print("Encoding Type: {0}", std::string::to_string(tab.FileInfo.EncodingType));
+    std::print("Line Carriage Type: {0}", std::string::to_string(tab.FileInfo.LineCarriage));
+    std::print("File: {0}", tab.FileInfo.SavedFilePath);
     std::print("Saved at " + formattedFileTime);
-    std::print("SHA256: {0}", format_to_hex(tab.FileContent_SHA256));
+    std::print("SHA256: {0}", format_to_hex(tab.FileInfo.SHA256));
 
-    std::print("Cursor Position: {0}", tab.SelectionStartIndex);
+    std::print("Cursor Position: {0}", tab.CursorInfo.StartIndex);
+
+    std::print("Word Wrap: {0}", tab.Options.WordWrap);
+    std::print("RightToLeft: {0}", tab.Options.RightToLeft);
+    std::print("ShowUnicodeControl: {0}", tab.Options.ShowUnicodeControl);
     
-    if (tab.SelectionStartIndex != tab.SelectionEndIndex)
+    if (tab.CursorInfo.StartIndex != tab.CursorInfo.EndIndex)
     {
-        std::print("Selection End Index: {0}", tab.SelectionEndIndex);
-        str slice = std::string::substr(std::string::to_string(tab.Content), tab.SelectionStartIndex, tab.SelectionEndIndex - tab.SelectionStartIndex);
+        std::print("Selection End Index: {0}", tab.CursorInfo.EndIndex);
+        str slice = std::string::substr(std::string::to_string(tab.Content), tab.CursorInfo.StartIndex, tab.CursorInfo.EndIndex - tab.CursorInfo.StartIndex);
         std::print("Selected Text: {0}", slice);
     }
 }
