@@ -1,3 +1,10 @@
+// Applies to:
+// Saved Tabs
+// Unsaved Tabs
+
+// Does not apply to:
+// Sequenced Tabs (0.bin 1.bin)
+
 #include <std/string.pat>
 #include <type/leb128.pat>
 #include <std/time.pat>
@@ -6,7 +13,7 @@
 using ul = type::uLEB128;
 using int = u32;
 
-// Thanks to https://github.com/ogmini/Notepad-Tabstate-Buffer/blob/main/README.md#insertion-chunk
+// https://github.com/ogmini/Notepad-Tabstate-Buffer/blob/main/README.md#insertion-chunk
 struct UnsavedChunk
 {
     ul CursorPosition;
@@ -32,7 +39,7 @@ enum EOLSequenceType : u8
 {
     CRLF = 1, // Windows
     CR = 2, // Mac
-    LF = 3, // Linux
+    LF = 3 // Linux
 };
 
 struct SelectionInfo
@@ -131,7 +138,7 @@ if (tab.IsSaved)
 
     std::time::Time localTime = filetime_to_local(tab.FileInfo.FileTime);
 
-    str formattedFileTime = std::time::format(localTime, "%H:%M:%S | %Y-%m-%d");
+    str formattedFileTime = std::time::format(localTime, "%Y-%m-%d | %H:%M:%S");
 
     std::print("Encoding Type: {0}", std::string::to_string(tab.FileInfo.EncodingType));
     std::print("Line Carriage Type: {0}", std::string::to_string(tab.FileInfo.LineCarriage));
@@ -141,9 +148,7 @@ if (tab.IsSaved)
 
     std::print("Cursor Position: {0}", tab.CursorInfo.StartIndex);
 
-    std::print("Word Wrap: {0}", tab.Options.WordWrap);
-    std::print("RightToLeft: {0}", tab.Options.RightToLeft);
-    std::print("ShowUnicodeControl: {0}", tab.Options.ShowUnicodeControl);
+    std::print("Options: {0}", tab.Options);
     
     if (tab.CursorInfo.StartIndex != tab.CursorInfo.EndIndex)
     {
@@ -155,3 +160,10 @@ if (tab.IsSaved)
 
 std::print("Content: {0}", tab.Content);
 std::print("CRC32: {0}", format_to_hex(tab.CRC32));
+
+// -- Print Unknowns --
+
+std::print("\nUnknowns\n------");
+
+std::print("Selection Start Delimiter: {0}", tab.SelectionStartDelimiter);
+std::print("Unknown Tab Option: {0}\n", tab.Options.Unknown);
