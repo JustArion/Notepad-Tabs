@@ -70,7 +70,7 @@ struct SavedFileInfo
 
 struct NotepadTab
 {
-    char NullTerminatedHeaderIdentifier[2]; // NP
+    char MagicBytes[2]; // NP
     // https://github.com/Nordgaren/tabstate-util/issues/1#issuecomment-1988731585
     ul UnsavedSequenceNumber; // 0 in Saved files.
     bool IsSaved;
