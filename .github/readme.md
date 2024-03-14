@@ -18,7 +18,8 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 
 `[~] = Undefined Length / Defined at runtime`
 
-- [3] `char[3]` Header Identifier (Null Terminated) `NP\0`
+- [2] `char[2]` Magic Numbers / Header Identifier `NP`
+- [1-16] `ul` Unsaved Sequence Number (Reserved for 0.bin and 1.bin files) `00`
 - [1] `bool` IsSaved (The Tab) `00 / 01`
 
 `If IsSaved:`

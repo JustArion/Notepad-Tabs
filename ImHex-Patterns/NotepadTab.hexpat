@@ -133,8 +133,8 @@ NotepadTab tab @ 0x0;
 
 if (tab.IsSaved)
 {
-    std::time::EpochTime unixTime = std::time::filetime_to_unix(tab.FileInfo.FileTime);
-    std::print("Last Saved Unix Time is {0}", std::string::to_string(unixTime));
+    std::time::EpochTime unixTimestamp = std::time::filetime_to_unix(tab.FileInfo.FileTime);
+    std::print("Last Saved Unix Time is {0}",std::string::to_string(unixTimestamp));
 
     std::time::Time localTime = filetime_to_local(tab.FileInfo.FileTime);
 
