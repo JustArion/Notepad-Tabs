@@ -27,7 +27,8 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 > - [~] `char16[~]` Saved File Path
 >     - UTF-16
 > - [1-16] `ul` Saved Tab Content Length
-> - [2] `u8[2]` Possible Delimiter `05 01`
+> - [1] `enum EncodingTypes` Encoding Type `UTF-8`
+> - [1] `enum EOLSequenceType` Line Carriage Type `CRLF (Windows)`
 > - [1-16] `ul` FileTime `D2 EC E8 C2 D8 AF 9C ED 01`
 >     - Increments from Left to Right
 >     - 9 bytes
