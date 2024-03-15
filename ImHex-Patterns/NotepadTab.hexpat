@@ -18,8 +18,7 @@ struct UnsavedChunk
 {
     ul CursorPosition;
     ul CharactersDeleted;
-    ul CharactersAdded;
-    char16 AddedCharacters[CharactersAdded];
+    string16 AddedCharacters;
     u8 CRC32[4];
 };
 

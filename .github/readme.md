@@ -10,7 +10,9 @@
 - [sizeInBytes] `dataType` Short Description / Title `Example Bytes`
     - Additional Observations
 
-**Note:** For convenience sake I will denote `ULEB128` as `ul`
+**Notices:** 
+- For convenience sake I will denote `ULEB128` as `ul`
+- The [hexpat](../ImHex-Patterns/NotepadTab.pat) file has more detailed records with bundled data-types. Eg. a struct containing the `Start` and `End` for selection indexes.
 
 ### File Tab
 
@@ -36,14 +38,16 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 > - [2] `u8[2]` Possible Selection Start Delimiter `00 01`
 
 `Else:`
-> - [1] `u8` Possible Selection Start Delimiter
+> - [1] `u8` Possible Selection Start Delimiter `01`
 
 - [1-16] `ul` Selection Start Index
 - [1-16] `ul` Selection End Index
-- [4] `u8[4]` Possible Delimiter `01 00 00 00`
-- [1-16] `ul` Unsaved Tab Content Length
-- [~] `char16[~]` Tab Content
-    - UTF-16
+- [1] `bool` WordWrap `00 / 01`
+- [1] `bool` Right To Left `00 / 01`
+- [1] `bool` Show Unicode Control `00 / 01`
+- [1] `u8` Unknown (Likely bool) `00`
+- [1-16] `ul` Content Length
+- [~] `char16[~]` Content
 - [1] `bool` Has Unsaved Content `00 / 01`
     - `False` on Saved File
     - `True` on Unsaved File
@@ -61,5 +65,5 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 - [1-16] `ul` Cursor Position
 - [1-16] `ul` Number of Characters Deleted
 - [1-16] `ul` Numbers of Characters Added
-- [~] `char16[~]` Literal Characters that have been added.
+- [~] `char16[~]` Literal Characters that have been added
 - [4] `u32` CRC of all content of the chunk up to here
