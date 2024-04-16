@@ -18,7 +18,8 @@ struct UnsavedChunk
 {
     ul CursorPosition;
     ul CharactersDeleted;
-    string16 AddedCharacters;
+    ul CharactersAdded;
+    string16 AddedCharacters; //TODO: Not sure how this should be expressed. The number of characters added tells us how many bytes to read for the added characters
     u8 CRC32[4];
 };
 
