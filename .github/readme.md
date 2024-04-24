@@ -25,9 +25,7 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 - [1] `bool` IsSaved (The Tab) `00 / 01`
 
 `If IsSaved:`
-> - [1-16] `ul` Saved File Path Length
-> - [~] `char16[~]` Saved File Path
->     - UTF-16
+> - [~] `string16` Saved File Path
 > - [1-16] `ul` Saved Tab Content Length
 > - [1] `enum EncodingTypes` Encoding Type `UTF-8`
 > - [1] `enum EOLSequenceType` Line Carriage Type `CRLF (Windows)`
@@ -46,8 +44,7 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 - [1] `bool` Right To Left `00 / 01`
 - [1] `bool` Show Unicode Control `00 / 01`
 - [1] `u8` Unknown (Likely bool) `00`
-- [1-16] `ul` Content Length
-- [~] `char16[~]` Content
+- [~] `string16` Content
 - [1] `bool` Has Unsaved Content `00 / 01`
     - `False` on Saved File
     - `True` on Unsaved File
@@ -64,6 +61,5 @@ The Pattern for this type can be found [here](../ImHex-Patterns/NotepadTab.pat)
 
 - [1-16] `ul` Cursor Position
 - [1-16] `ul` Number of Characters Deleted
-- [1-16] `ul` Numbers of Characters Added
-- [~] `char16[~]` Literal Characters that have been added
+- [~] `string16` Characters Added
 - [4] `u32` CRC of all content of the chunk up to here
