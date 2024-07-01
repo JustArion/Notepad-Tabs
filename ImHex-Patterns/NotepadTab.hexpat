@@ -12,6 +12,13 @@
 
 using ul = type::uLEB128;
 using int = u32;
+using byte = u8;
+
+struct string16
+{
+    ul Length;
+    char16 Value[Length];
+};
 
 // https://github.com/ogmini/Notepad-Tabstate-Buffer/blob/main/README.md#insertion-chunk
 struct UnsavedChunk
@@ -19,13 +26,13 @@ struct UnsavedChunk
     ul CursorPosition;
     ul CharactersDeleted;
     string16 AddedCharacters;
-    u8 CRC32[4];
+    byte CRC32[4];
 };
 
 // --- Data Types ---
 
 // Default fallback is UTF-8
-enum EncodingTypes : u8
+enum EncodingTypes : byte
 {
     UTF8 = 5,
     UTF8BOM = 4,
@@ -34,7 +41,7 @@ enum EncodingTypes : u8
     ANSI = 1,
 };
 
-enum EOLSequenceType : u8
+enum EOLSequenceType : byte
 {
     CRLF = 1, // Windows
     CR = 2, // Mac
@@ -55,13 +62,7 @@ struct TabOptions
     bool WordWrap;
     bool RightToLeft;
     bool ShowUnicodeControl;
-    u8 Unknown;
-};
-
-struct string16
-{
-    ul Length;
-    char16 Value[Length];
+    byte Unknown;
 };
 
 struct SavedFileInfo
@@ -71,7 +72,7 @@ struct SavedFileInfo
     EncodingTypes EncodingType;
     EOLSequenceType LineCarriage;
     ul FileTime;
-    u8 SHA256[32];
+    byte SHA256[32];
 };
 
 struct NotepadTab
@@ -85,11 +86,11 @@ struct NotepadTab
     {
         SavedFileInfo FileInfo;
         
-        u8 SelectionStartDelimiter[2]; // 00 01
+        byte SelectionStartDelimiter[2]; // 00 01
     }
     else 
     {
-        u8 SelectionStartDelimiter; // 01
+        byte SelectionStartDelimiter; // 01
     }
     
     SelectionInfo CursorInfo;
@@ -101,7 +102,7 @@ struct NotepadTab
     // False on unsaved file with chunks
     // True on saved file with unsaved content
     bool HasUnsavedContent; 
-    u8 CRC32[4];
+    byte CRC32[4];
     UnsavedChunk Chunks[0];
 };
 
@@ -109,7 +110,7 @@ struct NotepadTab
 
 fn filetime_to_local(ul time)
 {
-    int epoch=std::time::filetime_to_unix(time);
+    int epoch = std::time::filetime_to_unix(time);
     return std::time::to_local(epoch);
 };
 
